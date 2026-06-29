@@ -161,15 +161,17 @@ http://127.0.0.1:8000/
 
 # 📸 Screenshots
 
-Add screenshots of:
+## Landing Page
+![Landing Page](screenshots/landing.png)
 
-* Connectify Landing Page
-* Login Page
-* Registration Page
-* Home Feed
-* Profile Page
-* Follow System
-* Comments and Likes
+## Login Page
+![Login Page](screenshots/login.png)
+
+## Home Feed
+![Home Feed](screenshots/home.png)
+
+## Profile Page
+![Profile Page](screenshots/profile.png)
 
 ---
 
