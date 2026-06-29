@@ -1,0 +1,213 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>{{profile_user.username}} | Connectify</title>
+
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+
+
+<body class="premium-bg">
+
+
+<div class="profile-page">
+
+
+<div class="profile-card">
+
+
+{% if profile_user.profile.profile_pic %}
+
+<img src="{{profile_user.profile.profile_pic.url}}" class="profile-img">
+
+{% else %}
+
+<img src="{% static 'default.png' %}" class="profile-img">
+
+{% endif %}
+
+
+
+<h1>
+{{profile_user.username}}
+</h1>
+
+
+<p class="bio">
+✨ Connectify Creator
+</p>
+
+
+
+<div class="stats">
+
+
+<div>
+<h2>{{posts.count}}</h2>
+<span>Posts</span>
+</div>
+
+
+
+<div>
+<h2>{{followers_count}}</h2>
+<span>Followers</span>
+</div>
+
+
+
+<div>
+<h2>{{following_count}}</h2>
+<span>Following</span>
+</div>
+
+
+
+</div>
+
+
+
+
+
+{% if request.user != profile_user %}
+
+
+
+{% if is_following %}
+
+<a href="{% url 'follow_user' profile_user.username %}" 
+class="premium-btn">
+
+Unfollow
+
+</a>
+
+
+{% else %}
+
+<a href="{% url 'follow_user' profile_user.username %}" 
+class="premium-btn">
+
+Follow
+
+</a>
+
+
+{% endif %}
+
+
+
+{% else %}
+
+
+<a href="#" class="premium-btn">
+
+Edit Profile
+
+</a>
+
+
+{% endif %}
+
+
+
+
+<br><br>
+
+
+<a href="/" class="back-btn">
+
+← Back Home
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+<h2 class="section-title">
+
+Posts ✨
+
+</h2>
+
+
+
+
+
+<div class="posts-container">
+
+
+
+{% for post in posts %}
+
+
+<div class="post-card">
+
+
+
+<p>
+
+{{post.content}}
+
+</p>
+
+
+
+{% if post.image %}
+
+<img src="{{post.image.url}}">
+
+{% endif %}
+
+
+
+<small>
+
+{{post.created_at}}
+
+</small>
+
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<div class="post-card">
+
+No posts yet 🚀
+
+</div>
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,30 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+<div class="profile-card">
+
+<h1>Edit Profile</h1>
+
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input 
+name="name"
+placeholder="Enter name">
+
+
+<br><br>
+
+<button class="follow-btn">
+Save
+</button>
+
+
+</form>
+
+
+</div>

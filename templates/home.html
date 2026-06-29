@@ -1,0 +1,531 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Connectify</title>
+
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+
+
+<body class="premium-bg">
+
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+
+<div class="logo">
+
+✨ Connectify
+
+</div>
+
+
+<div class="search">
+
+<input placeholder="Search Connectify...">
+
+</div>
+
+
+<div class="top-icons">
+
+🔔 ✨
+
+<img src="https://i.pravatar.cc/40">
+
+
+{{request.user.username}}
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="main-container">
+
+
+
+<!-- LEFT SIDEBAR -->
+
+
+<div class="sidebar">
+
+
+<a href="{% url 'home' %}">
+🏠 Home
+</a>
+
+
+<a href="/profile/{{request.user.username}}/">
+👤 Profile
+</a>
+
+<a href="{% url 'messages' %}">
+💬 Messages
+</a>
+
+
+<a href="{% url 'groups' %}">
+👥 Groups
+</a>
+
+
+<a href="{% url 'notifications' %}">
+🔔 Notifications
+</a>
+
+
+<a href="{% url 'settings' %}">
+⚙ Settings
+</a>
+
+
+<a href="{% url 'logout' %}" class="logout-link">
+🚪 Logout
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- FEED -->
+
+
+<div class="feed">
+
+
+
+<div class="card create">
+
+
+<h2>
+
+What's on your mind, {{request.user.username}}?
+
+</h2>
+
+
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+{{form.as_p}}
+
+
+<button>
+
+Post 🚀
+
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+
+
+<h2 class="feed-title">
+
+Latest Posts ✨
+
+</h2>
+
+
+
+
+
+{% for post in posts %}
+
+
+
+<div class="card post">
+
+
+<div class="profile">
+
+
+<img src="https://i.pravatar.cc/50">
+
+
+<div>
+
+
+<h3>
+
+{{post.user.username}}
+
+</h3>
+
+
+
+{% if post.user != request.user %}
+
+
+
+{% if post.is_following %}
+
+
+<a href="{% url 'follow_user' post.user.username %}" 
+class="premium-btn">
+
+Unfollow
+
+</a>
+
+
+{% else %}
+
+
+<a href="{% url 'follow_user' post.user.username %}" 
+class="premium-btn">
+
+Follow
+
+</a>
+
+
+{% endif %}
+
+
+
+{% endif %}
+
+
+<small>
+
+{{post.created_at}}
+
+</small>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<p class="content">
+
+{{post.content}}
+
+</p>
+
+
+
+
+
+{% if post.image %}
+
+<img class="post-image" src="{{post.image.url}}">
+
+{% endif %}
+
+
+
+
+
+
+<div class="actions">
+
+
+
+<a href="/like/{{post.id}}/">
+
+<button class="like">
+
+❤️ Like
+
+</button>
+
+</a>
+
+
+
+
+
+<form method="POST" action="/comment/{{post.id}}/">
+
+{% csrf_token %}
+
+<input 
+name="comment"
+placeholder="Write a comment..."
+required>
+
+
+<button>
+
+💬
+
+</button>
+
+
+</form>
+
+
+
+<button onclick="alert('Post shared!')">
+
+↗ Share
+
+</button>
+
+
+
+</div>
+
+
+
+
+<div class="comment-box">
+
+
+{% for comment in post.comment_set.all %}
+
+
+<div class="comment">
+
+
+<b>
+{{comment.user.username}}
+</b>
+
+
+<br>
+
+
+{{comment.text}}
+
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
+
+
+
+
+<p>
+
+❤️ {{post.like_set.count}}
+
+</p>
+
+
+
+</div>
+
+
+
+
+{% empty %}
+
+
+<div class="card">
+
+<h3>
+No posts yet 🚀
+</h3>
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- RIGHT SIDE -->
+
+
+<div class="rightbar">
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+✨ Stories
+
+</h2>
+
+
+
+<div class="stories">
+
+
+<img src="https://i.pravatar.cc/70">
+
+<img src="https://i.pravatar.cc/71">
+
+<img src="https://i.pravatar.cc/72">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+Suggested Connections
+
+</h2>
+
+
+
+{% for user in suggested_users %}
+
+
+
+<div class="suggest-user">
+
+
+<span>
+
+👤 {{user.username}}
+
+</span>
+
+
+
+
+
+{% if user.id in following_ids %}
+
+
+<a href="{% url 'follow_user' user.username %}" 
+class="premium-btn">
+
+Unfollow
+
+</a>
+
+
+
+{% else %}
+
+
+<a href="{% url 'follow_user' user.username %}" 
+class="premium-btn">
+
+Follow
+
+</a>
+
+
+
+{% endif %}
+
+
+
+
+</div>
+
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+
+🔥 Trending
+
+</h2>
+
+
+<p>
+#Connectify
+</p>
+
+
+<p>
+#Technology
+</p>
+
+
+<p>
+#Innovation
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</div>
+<script src="{% static 'script.js' %}"></script>
+
+
+</body>
+
+</html>
